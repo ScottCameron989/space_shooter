@@ -1,5 +1,4 @@
-﻿using Unity.VisualScripting;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
@@ -9,7 +8,6 @@ public class GameManager : MonoBehaviour
     
     void Update()
     {
-        // Do I also need to stop/kill any running Coroutines?
         if (Input.GetKeyDown(KeyCode.R) && _isGameOver)
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         

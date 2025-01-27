@@ -24,6 +24,7 @@ using UnityEngine;
         private AudioSource _audioSource;
         private bool _isDead = false;
         private float _canFire = -1;     
+        private Transform _laserOffset;
         
         void Start()
         {
@@ -31,9 +32,11 @@ using UnityEngine;
             if (_player == null) Debug.LogError("Player not found");
             _audioSource = GetComponent<AudioSource>();
             if (_audioSource == null) Debug.LogError("AudioSource not found on Enemy");
-            
+            _laserOffset = transform.Find("Laser_Offset");
+            if (_laserOffset == null) Debug.LogError("Laser Offset not found on Enemy");
             _animator = GetComponent<Animator>();
             if (_animator == null) Debug.LogError("Animator not found");
+            
             var deathAnim =  _animator.runtimeAnimatorController.animationClips.FirstOrDefault(x => x.name == "EnemyDestroyed_anim");
             if (deathAnim != null)
             {
@@ -49,7 +52,7 @@ using UnityEngine;
             {
                 _fireRate = Random.Range(3f, 7f);
                 _canFire = Time.time + _fireRate;
-                Instantiate(_enemyLaser, new Vector3(transform.position.x,transform.position.y-1,0), Quaternion.identity);
+                Instantiate(_enemyLaser, _laserOffset.position, Quaternion.identity);
             }
         }
 
@@ -64,7 +67,6 @@ using UnityEngine;
         {
             if ( other.CompareTag("Player") )
             {
-                // What is more effecient? Destroy of the collider or disablement??
                 GetComponent<Collider2D>().enabled = false;
                 _isDead = true;
                 _player.Damage();

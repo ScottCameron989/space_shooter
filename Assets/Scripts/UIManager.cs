@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    
     [SerializeField]
     private TMP_Text _scoreText;
 
@@ -21,10 +20,6 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private Sprite[] _livesSprites;
   
-    // IS it good to have these here even though we are just reloading the scene?
-    // Do coroutines get killed when loading a new scene?
-    // are their resources freed/released
-    Coroutine _blinkCoroutine;
     private bool _shouldBlink = true;
 
     void Start()
@@ -40,6 +35,7 @@ public class UIManager : MonoBehaviour
     
     public void UpdateLives(int lives)
     {
+        lives = Mathf.Clamp(lives, 0, _livesSprites.Length - 1);
         _livesImage.sprite = _livesSprites[lives];
         if (lives == 0)
         {
@@ -51,7 +47,7 @@ public class UIManager : MonoBehaviour
     {
         _gameOverText.gameObject.SetActive(true);
         _restartText.gameObject.SetActive(true);
-        _blinkCoroutine = StartCoroutine(BlinkRoutine());
+        StartCoroutine(BlinkRoutine());
     }
 
     IEnumerator BlinkRoutine()
@@ -62,5 +58,4 @@ public class UIManager : MonoBehaviour
             _gameOverText.gameObject.SetActive(!_gameOverText.gameObject.activeSelf);
         }
     }
-    
 }

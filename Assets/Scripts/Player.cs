@@ -1,7 +1,5 @@
-using System;
 using System.Collections;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 public class Player : MonoBehaviour
 {
@@ -62,6 +60,7 @@ public class Player : MonoBehaviour
     
     private int _lastEngineDamage;
     private AudioSource _audioSource;
+    private Transform _laserOffset;
     
     void Start()
     {
@@ -70,6 +69,7 @@ public class Player : MonoBehaviour
         _uiManager = GameObject.FindObjectOfType<UIManager>();
         _gameManager = GameObject.FindObjectOfType<GameManager>();
         _audioSource = GetComponent<AudioSource>();
+        _laserOffset = transform.Find("Laser_Offset");    
         
         if (_spawnManager == null) Debug.LogError("No SpawnManager found");
         if (_uiManager == null) Debug.LogError("UI manager not found");
@@ -78,6 +78,7 @@ public class Player : MonoBehaviour
         if (_audioSource == null) Debug.LogError("AudioSource not found on Player");
         if (_explosionVfx == null) Debug.LogError("Explosion VFX not Set on Player");
         if (_shield == null) Debug.LogError("Shield not Set on Player");
+        if (_laserOffset == null) Debug.LogError("Laser_Offset not found on Player");
     }
     
     void Update()
@@ -90,10 +91,10 @@ public class Player : MonoBehaviour
     {
             _canFire = Time.time + _fireRate;
             if (_isTripleShotActive)
-                Instantiate(_tripleShotPrefab, new Vector3(transform.position.x,transform.position.y,0), Quaternion.identity);
+                Instantiate(_tripleShotPrefab, _laserOffset.position, Quaternion.identity);
             else
-                Instantiate(_laserPrefab, new Vector3(transform.position.x,transform.position.y+1,0), Quaternion.identity);
-            
+                Instantiate(_laserPrefab, _laserOffset.position, Quaternion.identity);
+
             _audioSource.PlayOneShot(_fireSound);
     }
     
@@ -103,13 +104,11 @@ public class Player : MonoBehaviour
         float verticalInput = Input.GetAxis("Vertical");
 
         Vector3 direction = new Vector3(horizontalInput,verticalInput,0);
-        transform.Translate( _speed * Time.deltaTime* direction);
-
-        Vector3 currentPosition = transform.position;
+        transform.Translate( _speed * Time.deltaTime * direction);
         
-        float wrappedX = WrapValue(currentPosition.x, -11.3f, 11.3f);
+        float wrappedX = WrapValue(transform.position.x, -11.3f, 11.3f);
         
-        transform.position = new Vector3(wrappedX,Math.Clamp(currentPosition.y,-3.65f,0f),0);
+        transform.position = new Vector3(wrappedX,Mathf.Clamp(transform.position.y,-3.65f,0f),0);
     }
     
     /// <summary>
@@ -137,7 +136,6 @@ public class Player : MonoBehaviour
         }
         
         _lives--;
-        _lives = Mathf.Clamp(_lives, 0, _lives);
         _uiManager.UpdateLives(_lives);
         ToggleRandomEngineDamage();
         if (_lives < 1 )

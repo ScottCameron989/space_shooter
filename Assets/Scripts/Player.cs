@@ -11,10 +11,23 @@ public class Player : MonoBehaviour
     private float _speedBoostMultiplier = 2f;
     
     [SerializeField]
+    private float _thrustBoostMultiplier = 1.5f;
+    
+    [SerializeField]
     private float _fireRate = 0.5f;
     
     [SerializeField]
     private int _lives = 3;
+    
+    [SerializeField]
+    [Range(0f,1f)]
+    private float _fuelPercent = 1f;
+    
+    [SerializeField]
+    private float _fuelRate = 0.2f;
+    
+    [SerializeField]
+    private float _fuelRegenRate = 0.2f;
     
     [SerializeField]
     private GameObject _laserPrefab;
@@ -51,6 +64,7 @@ public class Player : MonoBehaviour
     #endregion
     
     private float _canFire = -1f;
+    private bool _isBoosting = false;
     
     private SpawnManager _spawnManager;
     private UIManager _uiManager;
@@ -61,6 +75,7 @@ public class Player : MonoBehaviour
     private int _lastEngineDamage;
     private AudioSource _audioSource;
     private Transform _laserOffset;
+    private Vector3 _moveDirection;
     
     void Start()
     {
@@ -79,14 +94,24 @@ public class Player : MonoBehaviour
         if (_explosionVfx == null) Debug.LogError("Explosion VFX not Set on Player");
         if (_shield == null) Debug.LogError("Shield not Set on Player");
         if (_laserOffset == null) Debug.LogError("Laser_Offset not found on Player");
+        
+        _uiManager.UpdateFuelGuage(_fuelPercent);
     }
     
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire) FireLaser();
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            ThrusterBoost();
+        }
+        else
+        {
+            RefuelThrusters();
+        }
         CalculateMovement();
     }
-
+    
     private void FireLaser()
     {
             _canFire = Time.time + _fireRate;
@@ -98,13 +123,45 @@ public class Player : MonoBehaviour
             _audioSource.PlayOneShot(_fireSound);
     }
     
+     private void ThrusterBoost()
+     {
+         if (_isBoosting == false)
+         {
+             _isBoosting = true;
+             _speed *= _thrustBoostMultiplier;
+         }
+         if (_fuelPercent >= 0f){
+             _fuelPercent -= _fuelRate * Time.deltaTime;
+             _uiManager.UpdateFuelGuage(_fuelPercent);
+         }
+         if (_fuelPercent <= 0f && _isBoosting == true)
+         {
+             _isBoosting = false;
+             _speed /= _thrustBoostMultiplier;
+         }
+     }
+ 
+     private void RefuelThrusters()
+     {
+         if (_isBoosting == true)
+         {
+             _isBoosting = false;
+             _speed /= _thrustBoostMultiplier;
+         }
+ 
+         if (_fuelPercent <= 1f) {
+             _fuelPercent += _fuelRegenRate * Time.deltaTime;
+             _uiManager.UpdateFuelGuage(_fuelPercent);
+         }
+     }
+     
     private void CalculateMovement()
     {
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
 
-        Vector3 direction = new Vector3(horizontalInput,verticalInput,0);
-        transform.Translate( _speed * Time.deltaTime * direction);
+        _moveDirection.Set(horizontalInput,verticalInput,0);
+        transform.Translate( _speed * Time.deltaTime * _moveDirection);
         
         float wrappedX = WrapValue(transform.position.x, -11.3f, 11.3f);
         

@@ -18,8 +18,11 @@ public class UIManager : MonoBehaviour
     private TMP_Text _restartText;
     
     [SerializeField]
+    private Slider _fuelGuageSlider;
+    
+    [SerializeField]
     private Sprite[] _livesSprites;
-  
+    
     private bool _shouldBlink = true;
 
     void Start()
@@ -31,6 +34,11 @@ public class UIManager : MonoBehaviour
     public void UpdateScore(int score)
     {
         _scoreText.text = $"Score: {score}";
+    }
+    
+    public void UpdateFuelGuage(float fuel)
+    {
+        _fuelGuageSlider.value = fuel;
     }
     
     public void UpdateLives(int lives)

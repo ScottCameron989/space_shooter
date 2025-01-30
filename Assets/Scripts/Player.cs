@@ -17,6 +17,9 @@ public class Player : MonoBehaviour
     private float _fireRate = 0.5f;
     
     [SerializeField]
+    private int _availableAmmo = 15;
+    
+    [SerializeField]
     private int _lives = 3;
     
     [SerializeField]
@@ -83,6 +86,7 @@ public class Player : MonoBehaviour
     private readonly Vector3 _maxShieldScale = new Vector3(2f,2f,2f);
     private readonly Vector3 _midShieldScale = new Vector3(1.5f,1.5f,1.5f);
     private readonly Vector3 _minShieldScale = new Vector3(1f,1f,1f);
+    
     void Start()
     {
         transform.position = new Vector3(0f,-3.65f,0f);
@@ -107,7 +111,7 @@ public class Player : MonoBehaviour
     
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire) FireLaser();
+        if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire && _availableAmmo > 0) FireLaser();
         if (Input.GetKey(KeyCode.LeftShift))
         {
             ThrusterBoost();
@@ -123,10 +127,15 @@ public class Player : MonoBehaviour
     {
             _canFire = Time.time + _fireRate;
             if (_isTripleShotActive)
+            {
+                _availableAmmo -= 3;
                 Instantiate(_tripleShotPrefab, _laserOffset.position, Quaternion.identity);
+            }
             else
+            {
+                _availableAmmo -= 1;
                 Instantiate(_laserPrefab, _laserOffset.position, Quaternion.identity);
-
+            }
             _audioSource.PlayOneShot(_fireSound);
     }
     

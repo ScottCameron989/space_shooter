@@ -1262,6 +1262,7 @@ MonoBehaviour:
   _laserPrefab: {fileID: 3238696858492577784, guid: 73d5ec09e2babff4e9b9740ce0e56def, type: 3}
   _tripleShotPrefab: {fileID: 5019898776755754881, guid: e33b0c56ca260e64aa8965c2b8efb4bb, type: 3}
   _shield: {fileID: 2048326949}
+  _maxShieldStrength: 3
   _leftEngineDamage: {fileID: 1781890069}
   _rightEngineDamage: {fileID: 392406855}
   _fireSound: {fileID: 8300000, guid: 75676f361bdfeaf41a46623e95df3dbc, type: 3}

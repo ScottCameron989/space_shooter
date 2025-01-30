@@ -39,6 +39,9 @@ public class Player : MonoBehaviour
     private GameObject _shield;
     
     [SerializeField]
+    private int _maxShieldStrength = 3;
+    
+    [SerializeField]
     private GameObject _leftEngineDamage;
     
     [SerializeField]
@@ -76,7 +79,10 @@ public class Player : MonoBehaviour
     private AudioSource _audioSource;
     private Transform _laserOffset;
     private Vector3 _moveDirection;
-    
+    private int _shieldStrength;
+    private readonly Vector3 _maxShieldScale = new Vector3(2f,2f,2f);
+    private readonly Vector3 _midShieldScale = new Vector3(1.5f,1.5f,1.5f);
+    private readonly Vector3 _minShieldScale = new Vector3(1f,1f,1f);
     void Start()
     {
         transform.position = new Vector3(0f,-3.65f,0f);
@@ -96,6 +102,7 @@ public class Player : MonoBehaviour
         if (_laserOffset == null) Debug.LogError("Laser_Offset not found on Player");
         
         _uiManager.UpdateFuelGuage(_fuelPercent);
+        _shieldStrength = _maxShieldStrength;
     }
     
     void Update()
@@ -188,7 +195,7 @@ public class Player : MonoBehaviour
     {
         if (_isShieldActive)
         {
-            DeactivateShield();
+            DamageShield();
             return;
         }
         
@@ -203,7 +210,22 @@ public class Player : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    
+
+    private void DamageShield()
+    {
+        _shieldStrength -=  1;
+        ShowShieldDamage();
+        if (_shieldStrength <= 0 ) DeactivateShield();
+    }
+
+    private void ShowShieldDamage()
+    {
+        switch(_shieldStrength) {
+            case 2:_shield.transform.localScale = _midShieldScale; break;
+            case 1:_shield.transform.localScale = _minShieldScale; break;
+        }
+    }
+
     /// <summary>
     /// Toggles A Random Engine Damage object on first hit
     /// on second hit it will toggle the other engine. 
@@ -264,6 +286,8 @@ public class Player : MonoBehaviour
     public void ActivateShield()
     {
         _isShieldActive = true;
+        _shieldStrength = _maxShieldStrength;
+        _shield.transform.localScale = _maxShieldScale;
         _shield.SetActive(true);
     }
     

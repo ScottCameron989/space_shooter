@@ -6,7 +6,8 @@ public class PowerUp : MonoBehaviour
     {
         TripleShot,
         Speed,
-        Shield
+        Shield,
+        Ammo
     }
     
     [SerializeField]
@@ -14,6 +15,9 @@ public class PowerUp : MonoBehaviour
     
     [SerializeField]
     private PowerUpType _powerUpType = PowerUpType.Speed;
+    
+    [SerializeField]
+    private int _ammoGiven = 15;
     
     [SerializeField]
     private AudioClip _powerUpSound;
@@ -42,6 +46,9 @@ public class PowerUp : MonoBehaviour
                     break;
                 case PowerUpType.Shield:
                     player?.ActivateShield();
+                    break;
+                case PowerUpType.Ammo:
+                    player?.AddAmmo(_ammoGiven);
                     break;
             }
           

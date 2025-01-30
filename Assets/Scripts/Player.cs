@@ -129,6 +129,7 @@ public class Player : MonoBehaviour
             if (_isTripleShotActive)
             {
                 _availableAmmo -= 3;
+                if(_availableAmmo <= 0) _availableAmmo = 0;  
                 Instantiate(_tripleShotPrefab, _laserOffset.position, Quaternion.identity);
             }
             else
@@ -306,6 +307,10 @@ public class Player : MonoBehaviour
         _shield.SetActive(false);
     }
     
+    public void AddAmmo(int ammo)
+    {
+        _availableAmmo += ammo;
+    }
     IEnumerator TripleShotDisableTimer()
     {
         yield return new WaitForSeconds(5f);

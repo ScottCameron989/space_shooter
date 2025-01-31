@@ -17,7 +17,7 @@ public class Player : MonoBehaviour
     private float _fireRate = 0.5f;
     
     [SerializeField]
-    private int _availableAmmo = 15;
+    private int _maxAmmo = 15;
     
     [SerializeField]
     private int _lives = 3;
@@ -70,6 +70,7 @@ public class Player : MonoBehaviour
     #endregion
     
     private float _canFire = -1f;
+    private int _availableAmmo;
     private bool _isBoosting = false;
     
     private SpawnManager _spawnManager;
@@ -105,8 +106,10 @@ public class Player : MonoBehaviour
         if (_shield == null) Debug.LogError("Shield not Set on Player");
         if (_laserOffset == null) Debug.LogError("Laser_Offset not found on Player");
         
-        _uiManager.UpdateFuelGuage(_fuelPercent);
         _shieldStrength = _maxShieldStrength;
+        _availableAmmo = _maxAmmo;
+        _uiManager.UpdateFuelGuage(_fuelPercent);
+        _uiManager.UpdateAmmo(_availableAmmo);
     }
     
     void Update()
@@ -137,6 +140,7 @@ public class Player : MonoBehaviour
                 _availableAmmo -= 1;
                 Instantiate(_laserPrefab, _laserOffset.position, Quaternion.identity);
             }
+            _uiManager.UpdateAmmo(_availableAmmo);
             _audioSource.PlayOneShot(_fireSound);
     }
     
@@ -310,6 +314,8 @@ public class Player : MonoBehaviour
     public void AddAmmo(int ammo)
     {
         _availableAmmo += ammo;
+        _availableAmmo = Mathf.Clamp(_availableAmmo, 0, _maxAmmo);
+        _uiManager.UpdateAmmo(_availableAmmo);
     }
     IEnumerator TripleShotDisableTimer()
     {

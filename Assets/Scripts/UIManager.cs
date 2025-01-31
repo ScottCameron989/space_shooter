@@ -7,6 +7,9 @@ public class UIManager : MonoBehaviour
 {
     [SerializeField]
     private TMP_Text _scoreText;
+    
+    [SerializeField]
+    private TMP_Text _ammoText;
 
     [SerializeField]
     private Image _livesImage;
@@ -39,6 +42,11 @@ public class UIManager : MonoBehaviour
     public void UpdateFuelGuage(float fuel)
     {
         _fuelGuageSlider.value = fuel;
+    }
+    
+    public void UpdateAmmo(int ammo)
+    {
+        _ammoText.text = $"Ammo: {ammo}";
     }
     
     public void UpdateLives(int lives)

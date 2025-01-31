@@ -17,6 +17,9 @@ public class Player : MonoBehaviour
     private float _fireRate = 0.5f;
     
     [SerializeField]
+    private int _maxAmmo = 15;
+    
+    [SerializeField]
     private int _lives = 3;
     
     [SerializeField]
@@ -67,6 +70,7 @@ public class Player : MonoBehaviour
     #endregion
     
     private float _canFire = -1f;
+    private int _availableAmmo;
     private bool _isBoosting = false;
     
     private SpawnManager _spawnManager;
@@ -83,6 +87,7 @@ public class Player : MonoBehaviour
     private readonly Vector3 _maxShieldScale = new Vector3(2f,2f,2f);
     private readonly Vector3 _midShieldScale = new Vector3(1.5f,1.5f,1.5f);
     private readonly Vector3 _minShieldScale = new Vector3(1f,1f,1f);
+    
     void Start()
     {
         transform.position = new Vector3(0f,-3.65f,0f);
@@ -101,13 +106,15 @@ public class Player : MonoBehaviour
         if (_shield == null) Debug.LogError("Shield not Set on Player");
         if (_laserOffset == null) Debug.LogError("Laser_Offset not found on Player");
         
-        _uiManager.UpdateFuelGuage(_fuelPercent);
         _shieldStrength = _maxShieldStrength;
+        _availableAmmo = _maxAmmo;
+        _uiManager.UpdateFuelGuage(_fuelPercent);
+        _uiManager.UpdateAmmo(_availableAmmo);
     }
     
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire) FireLaser();
+        if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire && _availableAmmo > 0) FireLaser();
         if (Input.GetKey(KeyCode.LeftShift))
         {
             ThrusterBoost();
@@ -123,10 +130,17 @@ public class Player : MonoBehaviour
     {
             _canFire = Time.time + _fireRate;
             if (_isTripleShotActive)
+            {
+                _availableAmmo -= 3;
+                if(_availableAmmo <= 0) _availableAmmo = 0;  
                 Instantiate(_tripleShotPrefab, _laserOffset.position, Quaternion.identity);
+            }
             else
+            {
+                _availableAmmo -= 1;
                 Instantiate(_laserPrefab, _laserOffset.position, Quaternion.identity);
-
+            }
+            _uiManager.UpdateAmmo(_availableAmmo);
             _audioSource.PlayOneShot(_fireSound);
     }
     
@@ -297,6 +311,12 @@ public class Player : MonoBehaviour
         _shield.SetActive(false);
     }
     
+    public void AddAmmo(int ammo)
+    {
+        _availableAmmo += ammo;
+        _availableAmmo = Mathf.Clamp(_availableAmmo, 0, _maxAmmo);
+        _uiManager.UpdateAmmo(_availableAmmo);
+    }
     IEnumerator TripleShotDisableTimer()
     {
         yield return new WaitForSeconds(5f);

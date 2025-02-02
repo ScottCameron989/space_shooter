@@ -28,7 +28,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Powerup4_0008_00000
+  m_Name: Ammo_Powerup
   serializedVersion: 5
   m_AnimatorParameters: []
   m_AnimatorLayers:

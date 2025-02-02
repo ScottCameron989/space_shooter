@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -45,10 +46,7 @@ public class Player : MonoBehaviour
     private int _maxShieldStrength = 3;
     
     [SerializeField]
-    private GameObject _leftEngineDamage;
-    
-    [SerializeField]
-    private GameObject _rightEngineDamage;
+    GameObject[] _engineDamageObjects;
     
     [SerializeField]
     private AudioClip _fireSound;
@@ -215,7 +213,7 @@ public class Player : MonoBehaviour
         
         _lives--;
         _uiManager.UpdateLives(_lives);
-        ToggleRandomEngineDamage();
+        ToggleRandomEngineDamage(true);
         if (_lives < 1 )
         {
             Instantiate(_explosionVfx, transform.position, Quaternion.identity);
@@ -240,35 +238,13 @@ public class Player : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Toggles A Random Engine Damage object on first hit
-    /// on second hit it will toggle the other engine. 
-    /// </summary>
-    private void ToggleRandomEngineDamage()
+    private void ToggleRandomEngineDamage(bool active)
     {
-        switch (Random.Range(0, 2))
-        {
-            case 0: 
-                if (!_leftEngineDamage.activeSelf)
-                {
-                    _leftEngineDamage.SetActive(true);
-                }
-                else
-                {
-                    _rightEngineDamage.SetActive(true);
-                }
-                break;
+        var activeEngines = _engineDamageObjects.Where(c => c.activeSelf == !active).ToList();
 
-            case 1: 
-                if (!_rightEngineDamage.activeSelf)
-                {
-                    _rightEngineDamage.SetActive(true);
-                }
-                else
-                {
-                    _leftEngineDamage.SetActive(true);
-                }
-                break;
+        if (activeEngines.Count > 0)
+        {
+            activeEngines[Random.Range(0, activeEngines.Count)].SetActive(active);
         }
     }
     
@@ -303,6 +279,13 @@ public class Player : MonoBehaviour
         _shieldStrength = _maxShieldStrength;
         _shield.transform.localScale = _maxShieldScale;
         _shield.SetActive(true);
+    }
+    
+    public void AddLife()
+    {
+        _lives = Mathf.Clamp(++_lives,0, 3);
+        ToggleRandomEngineDamage(false);
+        _uiManager.UpdateLives(_lives);
     }
     
     private void DeactivateShield()

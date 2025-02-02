@@ -1264,8 +1264,9 @@ MonoBehaviour:
   _tripleShotPrefab: {fileID: 5019898776755754881, guid: e33b0c56ca260e64aa8965c2b8efb4bb, type: 3}
   _shield: {fileID: 2048326949}
   _maxShieldStrength: 3
-  _leftEngineDamage: {fileID: 1781890069}
-  _rightEngineDamage: {fileID: 392406855}
+  _engineDamageObjects:
+  - {fileID: 1781890069}
+  - {fileID: 392406855}
   _fireSound: {fileID: 8300000, guid: 75676f361bdfeaf41a46623e95df3dbc, type: 3}
   _explosionVfx: {fileID: 5502339808716914031, guid: 20df682e8f9911841a7a4746701cc29a, type: 3}
   _isTripleShotActive: 0
@@ -1338,10 +1339,10 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 150026406}
+  - {fileID: 181830039}
   - {fileID: 2048326952}
   - {fileID: 1781890071}
   - {fileID: 392406857}
-  - {fileID: 181830039}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &1004778964
@@ -1655,6 +1656,7 @@ MonoBehaviour:
   - {fileID: 8681932296613840551, guid: 6383d1f5cb8c3364682b5337a62c8734, type: 3}
   - {fileID: 10759731761112432, guid: 4e770e39809db914c826182ad8b4d4a0, type: 3}
   - {fileID: 5547144866634374573, guid: 51e8faa2b31b386419e636489cd8add3, type: 3}
+  - {fileID: 3691515354481944289, guid: c70f70b878eed7a4b9246cc2a984f7dc, type: 3}
   _enemyContainer: {fileID: 1600674674}
 --- !u!4 &1141209930
 Transform:

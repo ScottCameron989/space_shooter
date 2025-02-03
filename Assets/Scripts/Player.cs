@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    #region Inspector_fields
+    #region Inspector Fields
     [SerializeField]
     private float _speed = 5f;
 
@@ -61,24 +61,25 @@ public class Player : MonoBehaviour
     private GameObject _explosionVfx;
     
     [SerializeField]
-    private bool _isTripleShotActive = false;
+    private bool _isTripleShotActive;
     
     [SerializeField]
-    private bool _isBombActive = false;
+    private bool _isBombActive;
     
     [SerializeField]
-    private bool _isSpeedBoostActive = false;
+    private bool _isSpeedBoostActive;
     
     [SerializeField]
-    private bool _isShieldActive = false;
+    private bool _isShieldActive;
     
     [SerializeField]
-    private int _score = 0;
+    private int _score;
     #endregion
     
+    #region Internal Variables
     private float _canFire = -1f;
     private int _availableAmmo;
-    private bool _isBoosting = false;
+    private bool _isBoosting;
     
     private SpawnManager _spawnManager;
     private UIManager _uiManager;
@@ -94,6 +95,7 @@ public class Player : MonoBehaviour
     private readonly Vector3 _maxShieldScale = new Vector3(2f,2f,2f);
     private readonly Vector3 _midShieldScale = new Vector3(1.5f,1.5f,1.5f);
     private readonly Vector3 _minShieldScale = new Vector3(1f,1f,1f);
+    #endregion
     
     void Start()
     {
@@ -177,7 +179,7 @@ public class Player : MonoBehaviour
              _fuelPercent -= _fuelRate * Time.deltaTime;
              _uiManager.UpdateFuelGauge(_fuelPercent);
          }
-         if (_fuelPercent <= 0f && _isBoosting == true)
+         if (_fuelPercent <= 0f && _isBoosting)
          {
              _isBoosting = false;
              _speed /= _thrustBoostMultiplier;
@@ -186,7 +188,7 @@ public class Player : MonoBehaviour
  
      private void RefuelThrusters()
      {
-         if (_isBoosting == true)
+         if (_isBoosting)
          {
              _isBoosting = false;
              _speed /= _thrustBoostMultiplier;

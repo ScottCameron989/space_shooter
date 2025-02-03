@@ -60,18 +60,18 @@ public class Bomb : MonoBehaviour
              Explode();
      }
      
-     public void Explode()
+     private void Explode()
      {
          StopCoroutine(_explodeRoutine);
+         Instantiate(_explosionVfx, transform.position, transform.rotation);
          enabled = false;
          _speed = 0f;
          _spriteRenderer.enabled = false;
          _trailRenderer.enabled = false;
          _boxCollider2D.enabled = false;
-         Instantiate(_explosionVfx, transform.position, transform.rotation);
-         List<Collider2D> Colliders = new List<Collider2D>();
-         _circleCollider2D.OverlapCollider(new ContactFilter2D().NoFilter(), Colliders);
-         foreach(Collider2D other in Colliders)
+         List<Collider2D> colliders = new List<Collider2D>();
+         _circleCollider2D.OverlapCollider(new ContactFilter2D().NoFilter(), colliders);
+         foreach(Collider2D other in colliders)
          {
              if (other.CompareTag("Enemy"))
              {
@@ -87,6 +87,5 @@ public class Bomb : MonoBehaviour
              }
          }
          Destroy(gameObject, 2.6f);
-         //Collider[] colliders = Physics2d.OverlapSphere(transform.position, _circleCollider2D.radius);
      }
 }

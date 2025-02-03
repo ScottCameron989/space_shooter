@@ -25,6 +25,7 @@ using UnityEngine;
         private bool _isDead = false;
         private float _canFire = -1;     
         private Transform _laserOffset;
+        private Collider2D _collider;
         
         void Start()
         {
@@ -36,6 +37,7 @@ using UnityEngine;
             if (_laserOffset == null) Debug.LogError("Laser Offset not found on Enemy");
             _animator = GetComponent<Animator>();
             if (_animator == null) Debug.LogError("Animator not found");
+            _collider = GetComponent<Collider2D>();
             
             var deathAnim =  _animator.runtimeAnimatorController.animationClips.FirstOrDefault(x => x.name == "EnemyDestroyed_anim");
             if (deathAnim != null)
@@ -63,29 +65,30 @@ using UnityEngine;
                 transform.position = new Vector3(Random.Range(-9f,9f), 8.5f, 0);
         }
 
+        
+        public void BlowUp(bool givePoints)
+        {
+            _isDead = true;
+            _speed=0f;
+            _animator.SetTrigger("OnEnemyDeath");
+            _collider.enabled = false;
+            _audioSource.PlayOneShot(_explodeSound);
+            Destroy(gameObject,_deathAnimDelay);
+            if (givePoints) _player.AddScore(_points);
+        }
+        
         private void OnTriggerEnter2D(Collider2D other)
         {
             if ( other.CompareTag("Player") )
             {
-                GetComponent<Collider2D>().enabled = false;
-                _isDead = true;
                 _player.Damage();
-                _speed=0f;
-                _animator.SetTrigger("OnEnemyDeath");
-                _audioSource.PlayOneShot(_explodeSound);
-                Destroy(gameObject, _deathAnimDelay);
+                BlowUp(false);
             }
             
             if (other.CompareTag("Laser"))
             {
-                GetComponent<Collider2D>().enabled = false;
-                _isDead = true;
-                _speed=0f;
-                _animator.SetTrigger("OnEnemyDeath");
-                _audioSource.PlayOneShot(_explodeSound);
-                Destroy(gameObject,_deathAnimDelay);
+                BlowUp(true);
                 Destroy(other.gameObject);
-                _player.AddScore(_points);
             }
         }
         

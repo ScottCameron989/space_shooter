@@ -18,6 +18,9 @@ public class Player : MonoBehaviour
     private float _fireRate = 0.5f;
     
     [SerializeField]
+    private float _bombFireRate = 0.5f;
+    
+    [SerializeField]
     private int _maxAmmo = 15;
     
     [SerializeField]
@@ -40,6 +43,9 @@ public class Player : MonoBehaviour
     private GameObject _tripleShotPrefab;
     
     [SerializeField]
+    private GameObject _bombPrefab;
+    
+    [SerializeField]
     private GameObject _shield;
     
     [SerializeField]
@@ -56,6 +62,9 @@ public class Player : MonoBehaviour
     
     [SerializeField]
     private bool _isTripleShotActive = false;
+    
+    [SerializeField]
+    private bool _isBombActive = false;
     
     [SerializeField]
     private bool _isSpeedBoostActive = false;
@@ -112,7 +121,7 @@ public class Player : MonoBehaviour
     
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire && _availableAmmo > 0) FireLaser();
+        if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire) FireWeapon();
         if (Input.GetKey(KeyCode.LeftShift))
         {
             ThrusterBoost();
@@ -122,6 +131,20 @@ public class Player : MonoBehaviour
             RefuelThrusters();
         }
         CalculateMovement();
+    }
+    
+    private void FireWeapon()
+    {
+        if (_isBombActive)
+            FireBomb();
+        else if ( _availableAmmo > 0 )
+            FireLaser();
+    }
+    
+    private void FireBomb()
+    {
+        _canFire = Time.time + _bombFireRate;
+        Instantiate(_bombPrefab,_laserOffset.position, Quaternion.identity);
     }
     
     private void FireLaser()

@@ -22,14 +22,19 @@ public class Asteroid : MonoBehaviour
         transform.Rotate(_rotationSpeed * Time.deltaTime * Vector3.forward);
     }
     
+    public void BlowUp()
+    {
+        Instantiate(_explosionVfx, transform.position, Quaternion.identity);
+        _spawnManager.StartSpawn();
+        Destroy(gameObject,0.2f);
+    }
+    
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Laser"))
         {
-            Instantiate(_explosionVfx, transform.position, Quaternion.identity);
-            _spawnManager.StartSpawn();
+            BlowUp();
             Destroy(other.gameObject);
-            Destroy(gameObject,0.2f);
         }
     }
 }

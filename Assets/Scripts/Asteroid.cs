@@ -12,8 +12,7 @@ public class Asteroid : MonoBehaviour
     
     void Start()
     {
-        if (_explosionVfx == null)
-            Debug.LogError("Explosion VFX not set");
+        if (_explosionVfx == null) Debug.LogError("Explosion VFX not set");
         _spawnManager = GameObject.FindObjectOfType<SpawnManager>();
         if (_spawnManager == null) Debug.LogError("No SpawnManager found");
     }

@@ -21,7 +21,7 @@ public class UIManager : MonoBehaviour
     private TMP_Text _restartText;
     
     [SerializeField]
-    private Slider _fuelGuageSlider;
+    private Slider _fuelGaugeSlider;
     
     [SerializeField]
     private Sprite[] _livesSprites;
@@ -39,9 +39,9 @@ public class UIManager : MonoBehaviour
         _scoreText.text = $"Score: {score}";
     }
     
-    public void UpdateFuelGuage(float fuel)
+    public void UpdateFuelGauge(float fuel)
     {
-        _fuelGuageSlider.value = fuel;
+        _fuelGaugeSlider.value = fuel;
     }
     
     public void UpdateAmmo(int ammo)

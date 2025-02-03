@@ -115,7 +115,7 @@ public class Player : MonoBehaviour
         
         _shieldStrength = _maxShieldStrength;
         _availableAmmo = _maxAmmo;
-        _uiManager.UpdateFuelGuage(_fuelPercent);
+        _uiManager.UpdateFuelGauge(_fuelPercent);
         _uiManager.UpdateAmmo(_availableAmmo);
     }
     
@@ -174,7 +174,7 @@ public class Player : MonoBehaviour
          }
          if (_fuelPercent >= 0f){
              _fuelPercent -= _fuelRate * Time.deltaTime;
-             _uiManager.UpdateFuelGuage(_fuelPercent);
+             _uiManager.UpdateFuelGauge(_fuelPercent);
          }
          if (_fuelPercent <= 0f && _isBoosting == true)
          {
@@ -193,7 +193,7 @@ public class Player : MonoBehaviour
  
          if (_fuelPercent <= 1f) {
              _fuelPercent += _fuelRegenRate * Time.deltaTime;
-             _uiManager.UpdateFuelGuage(_fuelPercent);
+             _uiManager.UpdateFuelGauge(_fuelPercent);
          }
      }
      

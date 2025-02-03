@@ -121,6 +121,7 @@ public class Player : MonoBehaviour
     
     void Update()
     {
+        CalculateMovement();
         if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire) FireWeapon();
         if (Input.GetKey(KeyCode.LeftShift))
         {
@@ -130,7 +131,7 @@ public class Player : MonoBehaviour
         {
             RefuelThrusters();
         }
-        CalculateMovement();
+        
     }
     
     private void FireWeapon()

@@ -1559,6 +1559,7 @@ MonoBehaviour:
   - {fileID: 10759731761112432, guid: 4e770e39809db914c826182ad8b4d4a0, type: 3}
   - {fileID: 5547144866634374573, guid: 51e8faa2b31b386419e636489cd8add3, type: 3}
   - {fileID: 3691515354481944289, guid: c70f70b878eed7a4b9246cc2a984f7dc, type: 3}
+  - {fileID: 8852632672117527003, guid: 206331efd6786c141a8c28037ffdf9cf, type: 3}
   _enemyContainer: {fileID: 1600674674}
 --- !u!4 &1141209930
 Transform:

@@ -86,6 +86,7 @@ public class Player : MonoBehaviour
     private GameManager _gameManager;
     private Coroutine _tripleShotRoutine;
     private Coroutine _speedBoostRoutine;
+    private Coroutine _bombActiveRoutine;
     
     private int _lastEngineDamage;
     private AudioSource _audioSource;
@@ -343,5 +344,18 @@ public class Player : MonoBehaviour
     {
         _score += points;
         _uiManager.UpdateScore(_score);
+    }
+
+    public void ActivateBomb()
+    {
+        if (_bombActiveRoutine != null) StopCoroutine(_bombActiveRoutine);
+        _isBombActive = true;
+        _bombActiveRoutine = StartCoroutine(DisableBomb());
+    }
+
+    private IEnumerator DisableBomb()
+    {
+        yield return new WaitForSeconds(5f);
+        _isBombActive = false;
     }
 }

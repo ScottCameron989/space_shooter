@@ -96,6 +96,7 @@ public class Player : MonoBehaviour
     private readonly Vector3 _maxShieldScale = new Vector3(2f,2f,2f);
     private readonly Vector3 _midShieldScale = new Vector3(1.5f,1.5f,1.5f);
     private readonly Vector3 _minShieldScale = new Vector3(1f,1f,1f);
+    private CameraShake _cameraShake;
     #endregion
     
     void Start()
@@ -106,7 +107,9 @@ public class Player : MonoBehaviour
         _gameManager = GameObject.FindObjectOfType<GameManager>();
         _audioSource = GetComponent<AudioSource>();
         _laserOffset = transform.Find("Laser_Offset");    
+        _cameraShake = FindObjectOfType<CameraShake>();
         
+        if (_cameraShake == null) Debug.LogError("No camera shake found");
         if (_spawnManager == null) Debug.LogError("No SpawnManager found");
         if (_uiManager == null) Debug.LogError("UI manager not found");
         if (_gameManager == null) Debug.LogError("Game manager not found");
@@ -239,6 +242,7 @@ public class Player : MonoBehaviour
         
         _lives--;
         _uiManager.UpdateLives(_lives);
+        _cameraShake.StartShake();
         ToggleRandomEngineDamage(true);
         if (_lives < 1 )
         {

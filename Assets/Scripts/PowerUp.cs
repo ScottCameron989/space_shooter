@@ -8,7 +8,8 @@ public class PowerUp : MonoBehaviour
         Speed,
         Shield,
         Ammo,
-        Health
+        Health,
+        Bomb
     }
     
     [SerializeField]
@@ -35,30 +36,31 @@ public class PowerUp : MonoBehaviour
         if ( other.CompareTag("Player") )
         {
             Player player = other.GetComponent<Player>();
+            if (player == null) Debug.LogError("Player not found");
             AudioSource.PlayClipAtPoint(_powerUpSound, player.transform.position);
             
             switch (_powerUpType)
             {
                 case PowerUpType.TripleShot:
-                    player?.EnableTripleShot();
+                    player.EnableTripleShot();
                     break;
                 case PowerUpType.Speed:
-                    player?.EnableSpeedBoost();
+                    player.EnableSpeedBoost();
                     break;
                 case PowerUpType.Shield:
-                    player?.ActivateShield();
+                    player.ActivateShield();
                     break;
                 case PowerUpType.Ammo:
-                    player?.AddAmmo(_ammoGiven);
+                    player.AddAmmo(_ammoGiven);
                     break;
                 case PowerUpType.Health:
-                    player?.AddLife();
+                    player.AddLife();
+                    break;
+                case PowerUpType.Bomb:
+                    player.ActivateBomb();
                     break;
             }
-          
             Destroy(gameObject);
         }
     }
 }
-
-

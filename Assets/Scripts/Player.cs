@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    #region Inspector_fields
+    #region Inspector Fields
     [SerializeField]
     private float _speed = 5f;
 
@@ -16,6 +16,9 @@ public class Player : MonoBehaviour
     
     [SerializeField]
     private float _fireRate = 0.5f;
+    
+    [SerializeField]
+    private float _bombFireRate = 0.5f;
     
     [SerializeField]
     private int _maxAmmo = 15;
@@ -40,6 +43,9 @@ public class Player : MonoBehaviour
     private GameObject _tripleShotPrefab;
     
     [SerializeField]
+    private GameObject _bombPrefab;
+    
+    [SerializeField]
     private GameObject _shield;
     
     [SerializeField]
@@ -55,27 +61,32 @@ public class Player : MonoBehaviour
     private GameObject _explosionVfx;
     
     [SerializeField]
-    private bool _isTripleShotActive = false;
+    private bool _isTripleShotActive;
     
     [SerializeField]
-    private bool _isSpeedBoostActive = false;
+    private bool _isBombActive;
     
     [SerializeField]
-    private bool _isShieldActive = false;
+    private bool _isSpeedBoostActive;
     
     [SerializeField]
-    private int _score = 0;
+    private bool _isShieldActive;
+    
+    [SerializeField]
+    private int _score;
     #endregion
     
+    #region Internal Variables
     private float _canFire = -1f;
     private int _availableAmmo;
-    private bool _isBoosting = false;
+    private bool _isBoosting;
     
     private SpawnManager _spawnManager;
     private UIManager _uiManager;
     private GameManager _gameManager;
     private Coroutine _tripleShotRoutine;
     private Coroutine _speedBoostRoutine;
+    private Coroutine _bombActiveRoutine;
     
     private int _lastEngineDamage;
     private AudioSource _audioSource;
@@ -85,6 +96,7 @@ public class Player : MonoBehaviour
     private readonly Vector3 _maxShieldScale = new Vector3(2f,2f,2f);
     private readonly Vector3 _midShieldScale = new Vector3(1.5f,1.5f,1.5f);
     private readonly Vector3 _minShieldScale = new Vector3(1f,1f,1f);
+    #endregion
     
     void Start()
     {
@@ -106,13 +118,14 @@ public class Player : MonoBehaviour
         
         _shieldStrength = _maxShieldStrength;
         _availableAmmo = _maxAmmo;
-        _uiManager.UpdateFuelGuage(_fuelPercent);
+        _uiManager.UpdateFuelGauge(_fuelPercent);
         _uiManager.UpdateAmmo(_availableAmmo);
     }
     
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire && _availableAmmo > 0) FireLaser();
+        CalculateMovement();
+        if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire) FireWeapon();
         if (Input.GetKey(KeyCode.LeftShift))
         {
             ThrusterBoost();
@@ -121,7 +134,20 @@ public class Player : MonoBehaviour
         {
             RefuelThrusters();
         }
-        CalculateMovement();
+    }
+    
+    private void FireWeapon()
+    {
+        if (_isBombActive)
+            FireBomb();
+        else if ( _availableAmmo > 0 )
+            FireLaser();
+    }
+    
+    private void FireBomb()
+    {
+        _canFire = Time.time + _bombFireRate;
+        Instantiate(_bombPrefab,_laserOffset.position, Quaternion.identity);
     }
     
     private void FireLaser()
@@ -151,9 +177,9 @@ public class Player : MonoBehaviour
          }
          if (_fuelPercent >= 0f){
              _fuelPercent -= _fuelRate * Time.deltaTime;
-             _uiManager.UpdateFuelGuage(_fuelPercent);
+             _uiManager.UpdateFuelGauge(_fuelPercent);
          }
-         if (_fuelPercent <= 0f && _isBoosting == true)
+         if (_fuelPercent <= 0f && _isBoosting)
          {
              _isBoosting = false;
              _speed /= _thrustBoostMultiplier;
@@ -162,7 +188,7 @@ public class Player : MonoBehaviour
  
      private void RefuelThrusters()
      {
-         if (_isBoosting == true)
+         if (_isBoosting)
          {
              _isBoosting = false;
              _speed /= _thrustBoostMultiplier;
@@ -170,7 +196,7 @@ public class Player : MonoBehaviour
  
          if (_fuelPercent <= 1f) {
              _fuelPercent += _fuelRegenRate * Time.deltaTime;
-             _uiManager.UpdateFuelGuage(_fuelPercent);
+             _uiManager.UpdateFuelGauge(_fuelPercent);
          }
      }
      
@@ -300,6 +326,7 @@ public class Player : MonoBehaviour
         _availableAmmo = Mathf.Clamp(_availableAmmo, 0, _maxAmmo);
         _uiManager.UpdateAmmo(_availableAmmo);
     }
+    
     IEnumerator TripleShotDisableTimer()
     {
         yield return new WaitForSeconds(5f);
@@ -317,5 +344,18 @@ public class Player : MonoBehaviour
     {
         _score += points;
         _uiManager.UpdateScore(_score);
+    }
+
+    public void ActivateBomb()
+    {
+        if (_bombActiveRoutine != null) StopCoroutine(_bombActiveRoutine);
+        _isBombActive = true;
+        _bombActiveRoutine = StartCoroutine(DisableBomb());
+    }
+
+    private IEnumerator DisableBomb()
+    {
+        yield return new WaitForSeconds(5f);
+        _isBombActive = false;
     }
 }

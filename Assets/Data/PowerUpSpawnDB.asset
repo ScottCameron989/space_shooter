@@ -12,19 +12,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0652984ce9f4f7c878e110909095c34, type: 3}
   m_Name: PowerUpSpawnDB
   m_EditorClassIdentifier: 
-  spawnData:
+  _spawnData:
   - _prefabToSpawn: {fileID: 5547144866634374573, guid: 51e8faa2b31b386419e636489cd8add3, type: 3}
-    _spawnPrecent: 95
+    _spawnPercent: 95
     _weight: 95
+  - _prefabToSpawn: {fileID: 8852632672117527003, guid: 206331efd6786c141a8c28037ffdf9cf, type: 3}
+    _spawnPercent: 25
+    _weight: 120
   - _prefabToSpawn: {fileID: 3691515354481944289, guid: c70f70b878eed7a4b9246cc2a984f7dc, type: 3}
-    _spawnPrecent: 20
-    _weight: 115
+    _spawnPercent: 15
+    _weight: 135
   - _prefabToSpawn: {fileID: 10759731761112432, guid: 4e770e39809db914c826182ad8b4d4a0, type: 3}
-    _spawnPrecent: 40
-    _weight: 155
+    _spawnPercent: 28
+    _weight: 163
   - _prefabToSpawn: {fileID: 8681932296613840551, guid: 6383d1f5cb8c3364682b5337a62c8734, type: 3}
-    _spawnPrecent: 45
-    _weight: 200
+    _spawnPercent: 28
+    _weight: 191
   - _prefabToSpawn: {fileID: 2954317085736521074, guid: 60478c09adfd3be4e955a9da37a2da6d, type: 3}
-    _spawnPrecent: 50
-    _weight: 250
+    _spawnPercent: 35
+    _weight: 226

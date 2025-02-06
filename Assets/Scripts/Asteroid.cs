@@ -12,8 +12,8 @@ public class Asteroid : MonoBehaviour
     
     void Start()
     {
-        if (_explosionVfx == null)
-            Debug.LogError("Explosion VFX not set");
+        if (_explosionVfx == null) Debug.LogError("Explosion VFX not set");
+        
         _spawnManager = GameObject.FindObjectOfType<SpawnManager>();
         if (_spawnManager == null) Debug.LogError("No SpawnManager found");
     }
@@ -22,14 +22,19 @@ public class Asteroid : MonoBehaviour
         transform.Rotate(_rotationSpeed * Time.deltaTime * Vector3.forward);
     }
     
+    public void BlowUp()
+    {
+        Instantiate(_explosionVfx, transform.position, Quaternion.identity);
+        _spawnManager.StartSpawn();
+        Destroy(gameObject,0.2f);
+    }
+    
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Laser"))
         {
-            Instantiate(_explosionVfx, transform.position, Quaternion.identity);
-            _spawnManager.StartSpawn();
+            BlowUp();
             Destroy(other.gameObject);
-            Destroy(gameObject,0.2f);
         }
     }
 }

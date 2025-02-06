@@ -1651,12 +1651,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _enemySpawnRate: 5
   _enemyPrefab: {fileID: 1513801271225164794, guid: 2e86b353ab26e6c4e9d4ed2b627be869, type: 3}
-  _powerUpPrefabs:
-  - {fileID: 2954317085736521074, guid: 60478c09adfd3be4e955a9da37a2da6d, type: 3}
-  - {fileID: 8681932296613840551, guid: 6383d1f5cb8c3364682b5337a62c8734, type: 3}
-  - {fileID: 10759731761112432, guid: 4e770e39809db914c826182ad8b4d4a0, type: 3}
-  - {fileID: 5547144866634374573, guid: 51e8faa2b31b386419e636489cd8add3, type: 3}
-  - {fileID: 3691515354481944289, guid: c70f70b878eed7a4b9246cc2a984f7dc, type: 3}
+  _powerUpSpawnDB: {fileID: 11400000, guid: 11de161ff46ff9545ae94cbcbb0c9c15, type: 2}
   _enemyContainer: {fileID: 1600674674}
 --- !u!4 &1141209930
 Transform:

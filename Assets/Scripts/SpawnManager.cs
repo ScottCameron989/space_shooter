@@ -12,7 +12,7 @@ public class SpawnManager : MonoBehaviour
         private GameObject _enemyPrefab;
         
         [SerializeField]
-        private GameObject[] _powerUpPrefabs;
+        private WeightedSpawnDB _powerUpSpawnDB;
         
         [SerializeField]
         private Transform _enemyContainer;
@@ -23,6 +23,12 @@ public class SpawnManager : MonoBehaviour
         private Coroutine _powerUpRoutine = null;
         
         private Vector3 _nextSpawnPosition;
+        
+        public void Start()
+        {
+            if (_powerUpSpawnDB == null) Debug.LogError("No power up spawn DB Assigned");
+        }
+        
         public void StartSpawn()
         {
             if (_enemyRoutine == null)
@@ -50,8 +56,10 @@ public class SpawnManager : MonoBehaviour
             while (!_stopSpawning)
             {
                 _nextSpawnPosition.Set(Random.Range(-9f,9f), _nextSpawnPosition.y,_nextSpawnPosition.z );
-                GameObject powerUpPrefab = _powerUpPrefabs[Random.Range(0, _powerUpPrefabs.Length)];
-                Instantiate(powerUpPrefab, _nextSpawnPosition, Quaternion.identity);
+                /// Do Weighted Spawning of PowerUp.
+                ///GameObject powerUpPrefab = _powerUpPrefabs[Random.Range(0, _powerUpPrefabs.Length)];
+                /// Instantiate(powerUpPrefab, _nextSpawnPosition, Quaternion.identity);
+                Instantiate(_powerUpSpawnDB.GetRandomSpawn(), _nextSpawnPosition, Quaternion.identity);
                 yield return new WaitForSeconds(Random.Range(3, 8));
             }
         }

@@ -9,8 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6524691289012273173}
-  - component: {fileID: 8393548413059711199}
   - component: {fileID: 3917255368003366336}
+  - component: {fileID: 8393548413059711199}
   - component: {fileID: 3828798853842286556}
   - component: {fileID: 2710608707621505302}
   - component: {fileID: 1790056736426728425}
@@ -36,6 +36,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3917255368003366336
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7303978289085168763}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 140abcb020654730a80d7791bb6eca86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rotationSpeed: 30
+  _explosionVfx: {fileID: 5502339808716914031, guid: 20df682e8f9911841a7a4746701cc29a, type: 3}
 --- !u!212 &8393548413059711199
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -88,20 +102,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &3917255368003366336
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7303978289085168763}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 140abcb020654730a80d7791bb6eca86, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _rotationSpeed: 30
-  _explosionVfx: {fileID: 5502339808716914031, guid: 20df682e8f9911841a7a4746701cc29a, type: 3}
 --- !u!50 &3828798853842286556
 Rigidbody2D:
   serializedVersion: 4

@@ -42,28 +42,25 @@ public class PowerUp : MonoBehaviour
             switch (_powerUpType)
             {
                 case PowerUpType.TripleShot:
-                    player?.EnableTripleShot();
+                    player.EnableTripleShot();
                     break;
                 case PowerUpType.Speed:
-                    player?.EnableSpeedBoost();
+                    player.EnableSpeedBoost();
                     break;
                 case PowerUpType.Shield:
-                    player?.ActivateShield();
+                    player.ActivateShield();
                     break;
                 case PowerUpType.Ammo:
-                    player?.AddAmmo(_ammoGiven);
+                    player.AddAmmo(_ammoGiven);
                     break;
                 case PowerUpType.Health:
-                    player?.AddLife();
+                    player.AddLife();
                     break;
                 case PowerUpType.Bomb:
-                    player?.ActivateBomb();
+                    player.ActivateBomb();
                     break;
             }
-          
             Destroy(gameObject);
         }
     }
 }
-
-

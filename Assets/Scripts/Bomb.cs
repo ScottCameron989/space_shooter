@@ -5,7 +5,7 @@ using UnityEngine;
 public class Bomb : MonoBehaviour
 {
     [SerializeField]
-    private float _speed =4f;
+    private float _speed = 4f;
     
     [SerializeField]
     private float _explodeInSeconds = 1.25f;
@@ -17,6 +17,7 @@ public class Bomb : MonoBehaviour
     private Coroutine _explodeRoutine;
     private CircleCollider2D _circleCollider2D;
     private BoxCollider2D _boxCollider2D;
+    
     void Start()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
@@ -36,6 +37,7 @@ public class Bomb : MonoBehaviour
         yield return new WaitForSeconds(_explodeInSeconds);
         Explode();
     }
+    
     void Update()
     {
         CalculateMovement();
@@ -54,6 +56,7 @@ public class Bomb : MonoBehaviour
             Explode();
         }
     }
+    
      public void OnTriggerEnter2D(Collider2D other)
      {
          if (other.CompareTag("Enemy") || other.CompareTag("Asteroid"))

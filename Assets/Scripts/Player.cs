@@ -134,7 +134,6 @@ public class Player : MonoBehaviour
         {
             RefuelThrusters();
         }
-        
     }
     
     private void FireWeapon()
@@ -327,6 +326,7 @@ public class Player : MonoBehaviour
         _availableAmmo = Mathf.Clamp(_availableAmmo, 0, _maxAmmo);
         _uiManager.UpdateAmmo(_availableAmmo);
     }
+    
     IEnumerator TripleShotDisableTimer()
     {
         yield return new WaitForSeconds(5f);

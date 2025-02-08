@@ -26,11 +26,14 @@ public class Enemy : MonoBehaviour
     private float _canFire = -1;
     private Transform _laserOffset;
     private Collider2D _collider;
-
+    private Vector3 _moveVector = Vector3.down;
+    private float _changeDirection = 0.5f;
+    private bool _shouldmove;
+    
     void Start()
     {
         _player = GameObject.FindGameObjectWithTag("Player")?.GetComponent<Player>();
-        if (_player == null) Debug.LogError("Player not found");
+        if (_player ==null) Debug.LogError("Player not found");
     
         _audioSource = GetComponent<AudioSource>();
         if (_audioSource == null) Debug.LogError("AudioSource not found on Enemy");
@@ -48,12 +51,22 @@ public class Enemy : MonoBehaviour
         {
             _deathAnimDelay = deathAnim.length;
         }
+        
+        _shouldmove = Random.Range(0f,1f) > 0.5f;
+        if (_shouldmove)
+            _moveVector.x = 1f;
     }
 
     void Update()
     {
         CalculateMovement();
 
+         if (Time.time > _changeDirection && _shouldmove)
+         {
+             _changeDirection = Time.time + 1f;
+             _moveVector.x *= -1;
+         }
+         
         if (Time.time > _canFire && !_isDead)
         {
             _fireRate = Random.Range(3f, 7f);
@@ -64,7 +77,7 @@ public class Enemy : MonoBehaviour
 
     private void CalculateMovement()
     {
-        transform.Translate((_speed * Time.deltaTime) * Vector3.down);
+        transform.Translate(_speed * Time.deltaTime * _moveVector);
         if (transform.position.y <= -5.6f)
             transform.position = new Vector3(Random.Range(-9f, 9f), 8.5f, 0);
     }

@@ -8,14 +8,14 @@ public class Asteroid : MonoBehaviour
     [SerializeField]
     private GameObject _explosionVfx;
     
-    private SpawnManager _spawnManager;
+    private WaveManager _waveManager;
     
     void Start()
     {
         if (_explosionVfx == null) Debug.LogError("Explosion VFX not set");
         
-        _spawnManager = GameObject.FindObjectOfType<SpawnManager>();
-        if (_spawnManager == null) Debug.LogError("No SpawnManager found");
+        _waveManager = GameObject.FindObjectOfType<WaveManager>();
+        if (_waveManager == null) Debug.LogError("No WaveManager found");
     }
     void Update()
     {
@@ -25,7 +25,7 @@ public class Asteroid : MonoBehaviour
     public void BlowUp()
     {
         Instantiate(_explosionVfx, transform.position, Quaternion.identity);
-        _spawnManager.StartSpawn();
+        _waveManager.StartFirstWave();
         Destroy(gameObject,0.2f);
     }
     

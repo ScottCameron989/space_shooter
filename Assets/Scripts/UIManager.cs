@@ -21,6 +21,9 @@ public class UIManager : MonoBehaviour
     private TMP_Text _restartText;
     
     [SerializeField]
+    private TMP_Text _waveText;
+    
+    [SerializeField]
     private Slider _fuelGaugeSlider;
     
     [SerializeField]
@@ -32,6 +35,19 @@ public class UIManager : MonoBehaviour
     {
         _scoreText.text = $"Score: 0";
         _gameOverText.gameObject.SetActive(false);
+    }
+    
+    public void ShowWave(int waveNum)
+    {
+        StartCoroutine(WaveDisplay(waveNum));
+    }
+    
+    IEnumerator WaveDisplay(int waveNum)
+    {
+        _waveText.text = $"Wave {waveNum}";
+        _waveText.gameObject.SetActive(true);
+        yield return new WaitForSeconds(1f);
+        _waveText.gameObject.SetActive(false);
     }
     
     public void UpdateScore(int score)

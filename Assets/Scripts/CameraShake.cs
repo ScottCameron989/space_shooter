@@ -5,11 +5,11 @@ public class CameraShake : MonoBehaviour
     private Vector3 _position = Vector3.zero;
     
     [SerializeField]
-    private float _shakeAmount = .7f;
-    [SerializeField]    
-    private float _decreaseFactor = 1f;
+    private float _shakeAmount = 0.25f;
     
-     
+    [SerializeField]    
+    private float _decreaseFactor = 4f;
+    
     private Coroutine _shakeRoutine;
     private float _shake = 0f;
     
@@ -20,7 +20,7 @@ public class CameraShake : MonoBehaviour
     
     public void StartShake()
     {
-        _shake = 1;
+        _shake = 0.5f;
     }
 
     public void Update()

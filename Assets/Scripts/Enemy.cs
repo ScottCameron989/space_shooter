@@ -20,21 +20,26 @@ public class Enemy : MonoBehaviour
 
     private Player _player;
     private Animator _animator;
-    private float _deathAnimDelay = 0f;
+    private float _deathAnimDelay;
     private AudioSource _audioSource;
-    private bool _isDead = false;
+    private bool _isDead;
     private float _canFire = -1;
     private Transform _laserOffset;
     private Collider2D _collider;
     private Vector3 _moveVector = Vector3.down;
     private float _changeDirection = 0.5f;
-    private bool _shouldmove;
+    private bool _shouldMove;
+    private WaveManager _waveManager;
+    private readonly int _onDeathTrigger = Animator.StringToHash("OnEnemyDeath");
     
     void Start()
     {
         _player = GameObject.FindGameObjectWithTag("Player")?.GetComponent<Player>();
         if (_player ==null) Debug.LogError("Player not found");
     
+        _waveManager = FindObjectOfType<WaveManager>();
+        if(_waveManager == null) Debug.LogError("Wave manager not found");
+        
         _audioSource = GetComponent<AudioSource>();
         if (_audioSource == null) Debug.LogError("AudioSource not found on Enemy");
         
@@ -52,8 +57,8 @@ public class Enemy : MonoBehaviour
             _deathAnimDelay = deathAnim.length;
         }
         
-        _shouldmove = Random.Range(0f,1f) > 0.5f;
-        if (_shouldmove)
+        _shouldMove = Random.Range(0f,1f) > 0.5f;
+        if (_shouldMove)
             _moveVector.x = 1f;
     }
 
@@ -61,7 +66,7 @@ public class Enemy : MonoBehaviour
     {
         CalculateMovement();
 
-         if (Time.time > _changeDirection && _shouldmove)
+         if (Time.time > _changeDirection && _shouldMove)
          {
              _changeDirection = Time.time + 1f;
              _moveVector.x *= -1;
@@ -86,9 +91,10 @@ public class Enemy : MonoBehaviour
     {
         _isDead = true;
         _speed = 0f;
-        _animator.SetTrigger("OnEnemyDeath");
+        _animator.SetTrigger(_onDeathTrigger);
         _collider.enabled = false;
         _audioSource.PlayOneShot(_explodeSound);
+        _waveManager.EnemyKilled();
         Destroy(gameObject, _deathAnimDelay);
         if (givePoints) _player.AddScore(_points);
     }

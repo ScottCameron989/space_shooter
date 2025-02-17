@@ -20,9 +20,9 @@ public class Enemy : MonoBehaviour
 
     private Player _player;
     private Animator _animator;
-    private float _deathAnimDelay = 0f;
+    private float _deathAnimDelay;
     private AudioSource _audioSource;
-    private bool _isDead = false;
+    private bool _isDead;
     private float _canFire = -1;
     private Transform _laserOffset;
     private Collider2D _collider;
